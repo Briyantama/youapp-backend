@@ -70,6 +70,29 @@ $ mau deploy
 
 With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
+# 🟣 YouApp Backend
+
+Backend service for **YouApp** built with **NestJS**, **MongoDB**, **RabbitMQ**, **Socket.IO**, **JWT Auth**, and **Docker**, following **Clean Architecture** and **Best Practices**.
+
+![NestJS](https://img.shields.io/badge/Built%20With-NestJS-red)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-green)
+![Docker](https://img.shields.io/badge/Containerized-Docker-blue)
+![RabbitMQ](https://img.shields.io/badge/Queue-RabbitMQ-orange)
+
+---
+
+⚙️ Tech Stack
+
+NestJS
+
+MongoDB (with Mongoose)
+
+RabbitMQ (via microservices/event-pattern)
+
+JWT (for secure login sessions)
+
+Docker & Docker Compose
+
 ## Resources
 
 Check out a few resources that may come in handy when working with NestJS:

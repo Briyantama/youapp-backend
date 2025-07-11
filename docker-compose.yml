@@ -1,0 +1,33 @@
+services:
+  nest-app:
+    container_name: youapp-backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
+      - rabbitmq
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: youapp
+      RABBITMQ_DEFAULT_PASS: youapp123
+
+volumes:
+  mongo_data:

@@ -6,12 +6,14 @@ import { SendMessageArgsDto } from 'src/dtos/send-message-args.dto';
 import { SendMessageResultDto } from 'src/dtos/send-message-result.dto';
 import { UserService } from 'src/users/users.service';
 import { ViewMessagesResultDto } from 'src/dtos/view-messages-result.dto';
+import { ChatPublisher } from './rabbitmq/chat.publisher';
 
 @Injectable()
 export class ChatService {
   constructor(
     @InjectModel(Message.name) private messageModel: Model<MessageDocument>,
     private usersService: UserService,
+    private readonly chatPublisher: ChatPublisher,
   ) {}
 
   async sendMessage(
@@ -33,6 +35,13 @@ export class ChatService {
     if (!savedMessage) {
       throw new BadRequestException('Failed to send message');
     }
+
+    this.chatPublisher.notifyMessageSent({
+      sender: senderId,
+      receiver: receiver._id,
+      content: dto.content,
+      sentAt: new Date().toISOString(),
+    });
 
     return { message: 'ok' };
   }

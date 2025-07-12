@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { Logger } from '@nestjs/common';
 import { NextFunction } from 'express';
-// import { Transport } from '@nestjs/microservices';
+import { Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -37,14 +37,14 @@ async function bootstrap() {
     next();
   });
 
-  // app.connectMicroservice({
-  //   transport: Transport.RMQ,
-  //   options: {
-  //     urls: process.env.RABBITMQ_URI,
-  //     queue: 'chat_queue',
-  //     queueOptions: { durable: false },
-  //   },
-  // });
+  app.connectMicroservice({
+    transport: Transport.RMQ,
+    options: {
+      urls: process.env.RABBITMQ_URI,
+      queue: 'chat_queue',
+      queueOptions: { durable: false },
+    },
+  });
 
   await app.startAllMicroservices();
   Logger.log('✅ Microservice connected to RabbitMQ');

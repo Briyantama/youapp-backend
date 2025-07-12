@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Gender } from 'src/dtos/create-profile-args.dto';
 import { ulid } from 'ulid';
 
 export type ProfileDocument = HydratedDocument<Profile>;
@@ -16,7 +17,7 @@ export class Profile {
   fullName: string;
 
   @Prop()
-  gender: string;
+  gender: Gender;
 
   @Prop({ required: true })
   birthday: string;
@@ -40,7 +41,7 @@ export class Profile {
   interests: string[];
 
   @Prop()
-  profilePictureUrl: string;
+  profile_picture_url: string;
 
   @Prop()
   deletedAt?: Date;

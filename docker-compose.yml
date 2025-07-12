@@ -1,17 +1,17 @@
 services:
-  nest-app:
-    container_name: youapp-backend
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - '3000:3000'
-    depends_on:
-      - mongodb
-      - rabbitmq
-    env_file:
-      - .env
-    restart: unless-stopped
+  # nest-app:
+  #   container_name: youapp-backend
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - '3000:3000'
+  #   depends_on:
+  #     - mongodb
+  #     - rabbitmq
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
 
   mongodb:
     image: mongo:latest

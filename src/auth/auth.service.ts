@@ -3,15 +3,17 @@ import {
   UnauthorizedException,
   ConflictException,
 } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UserService } from '../users/users.service';
 import { UserDocument } from '../schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcrypt';
+import { RegisterResultDto } from 'src/dtos/register-result.dto';
+import { LoginResultDto } from 'src/dtos/login-result.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private usersService: UserService,
     private jwtService: JwtService,
   ) {}
 
@@ -19,7 +21,7 @@ export class AuthService {
     email: string,
     username: string,
     password: string,
-  ): Promise<{ message: string; userId: string }> {
+  ): Promise<RegisterResultDto> {
     const userExist = await this.usersService.findByEmailOrUsername(
       email,
       username,
@@ -34,10 +36,10 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    return { message: 'User registered', userId: newUser._id };
+    return { message: 'User registered', id: newUser._id };
   }
 
-  async login(identifier: string, password: string) {
+  async login(identifier: string, password: string): Promise<LoginResultDto> {
     const user: UserDocument | null =
       await this.usersService.findByEmailOrUsername(identifier);
 
@@ -49,6 +51,6 @@ export class AuthService {
     const payload = { sub: user._id };
     const token = this.jwtService.sign(payload);
 
-    return { access_token: token };
+    return { message: 'Login successfully`', access_token: token };
   }
 }

@@ -14,7 +14,7 @@ export enum Gender {
   Other = 'Other',
 }
 
-export class CreateProfileDto {
+export class CreateProfileArgsDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({ example: 'briyantama123' })

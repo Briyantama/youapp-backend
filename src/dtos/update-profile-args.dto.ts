@@ -1,7 +1,7 @@
 import { PartialType, ApiPropertyOptional } from '@nestjs/swagger';
-import { CreateProfileDto } from './create-profile.dto';
+import { CreateProfileArgsDto } from './create-profile-args.dto';
 
-export class UpdateProfileDto extends PartialType(CreateProfileDto) {
+export class UpdateProfileArgsDto extends PartialType(CreateProfileArgsDto) {
   @ApiPropertyOptional({ example: 180 })
   height?: number;
 

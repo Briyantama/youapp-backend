@@ -2,8 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
-import { UserDocument } from 'src/schemas/user.schema';
-import { UsersService } from 'src/users/users.service';
+import { UserService } from 'src/users/users.service';
 import { Request } from 'express';
 import { JwtPayload } from 'src/common/interface/jwt-payload.interface';
 
@@ -11,7 +10,7 @@ import { JwtPayload } from 'src/common/interface/jwt-payload.interface';
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     configService: ConfigService,
-    private userService: UsersService,
+    private userService: UserService,
   ) {
     const jwtExtractor: StrategyOptions['jwtFromRequest'] =
       ExtractJwt.fromAuthHeaderAsBearerToken();
@@ -29,13 +28,13 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super(options);
   }
 
-  async validate(req: Request, payload: JwtPayload): Promise<UserDocument> {
+  async validate(_req: Request, payload: JwtPayload): Promise<string> {
     const user = await this.userService.findById(payload.sub);
 
     if (!user) {
       throw new UnauthorizedException('User not registered');
     }
 
-    return user;
+    return payload.sub;
   }
 }

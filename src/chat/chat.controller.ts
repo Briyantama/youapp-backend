@@ -11,9 +11,8 @@ import {
 import { ChatService } from './chat.service';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { Request } from 'express';
-import { SendMessageDto } from 'src/dtos/send-message.dto';
+import { SendMessageArgsDto } from 'src/dtos/send-message-args.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { User } from 'src/schemas/user.schema';
 
 @ApiTags('Chat')
 @ApiBearerAuth('access-token')
@@ -22,25 +21,25 @@ import { User } from 'src/schemas/user.schema';
 export class ChatController {
   constructor(private chatService: ChatService) {}
 
-  @Post('sendMessage')
-  async sendMessage(@Body() dto: SendMessageDto, @Req() req: Request) {
-    const user = req.user as User;
+  @Post('send-message')
+  async sendMessage(@Body() dto: SendMessageArgsDto, @Req() req: Request) {
+    const id = req.user as string;
 
-    if (!user) {
+    if (!id) {
       throw new UnauthorizedException('User not registered');
     }
 
-    return this.chatService.sendMessage(user._id, dto);
+    return this.chatService.sendMessage(id, dto);
   }
 
-  @Get('viewMessages')
+  @Get('view-messages')
   async viewMessages(@Req() req: Request, @Query('to') to: string) {
-    const user = req.user as User;
+    const id = req.user as string;
 
-    if (!user) {
+    if (!id) {
       throw new UnauthorizedException('User not registered');
     }
 
-    return this.chatService.getMessages(user._id, to);
+    return this.chatService.getMessages(id, to);
   }
 }
